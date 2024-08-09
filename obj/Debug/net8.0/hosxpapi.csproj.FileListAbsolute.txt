@@ -104,3 +104,4 @@ C:\hosxpapi\obj\Debug\net8.0\refint\hosxpapi.dll
 C:\hosxpapi\obj\Debug\net8.0\hosxpapi.pdb
 C:\hosxpapi\obj\Debug\net8.0\hosxpapi.genruntimeconfig.cache
 C:\hosxpapi\obj\Debug\net8.0\ref\hosxpapi.dll
+C:\hosxpapi\obj\Debug\net8.0\hosxpapi.sourcelink.json

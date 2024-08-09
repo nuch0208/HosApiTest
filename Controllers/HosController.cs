@@ -5,69 +5,54 @@ using Microsoft.EntityFrameworkCore;
 namespace HosApi.Controllers;
 
 [Route("/api/[controller]/[action]")]
-    public class LabController : Controller
+    public class HosController : Controller
     {
         private readonly ApplicationDbContext db;
-        public LabController(ApplicationDbContext db)
+        public HosController(ApplicationDbContext db)
         {
             this.db = db;
         }
 
          [HttpGet]
-        public IActionResult getdb (string paraHN)
+        public IActionResult getHNdb (string paraHN)
         { 
             //  var query = Ovst  Patient
             // from a in db.Wards
-            var query =
+             var query =
             from a in db.Patients
-            join b in db.Ovsts on a.Hn equals b.Hn 
-            // join c in db.Wards  on b.Oldcode equals c.OldCode 
+            join b in db.Ovsts on a.Hn equals b.Hn  
+
             where a.Hn == paraHN 
-            orderby a.Hn ascending
+            // group a by a.Hn  into newGroup
+            
             select new
             {
-                a.Hn,
+                b.Hn,
                 a.Cid,
                 a.Pname,
                 a.Fname,
-                a.Lname,
-                b.Doctor
+                a.Lname
                 // c.Name,
                 // c.OldCode
             };
             return Json(query.Take(50));
         }
-        [HttpPost]
-        public async Task<ActionResult<List<Ward>>> AddWard(Ward ward)
+         [HttpGet]       
+        public IActionResult getQNdb(string paraQN)
         {
-            db.Wards.Add(ward);
-            await db.SaveChangesAsync();
-                
-            return Ok(await db.Wards.ToListAsync());
-        }
-        [HttpPut]
-        public async Task<ActionResult<List<Ward>>> UpdateWard(Ward updateward)
-        {
-            var dbward = await db.Wards.FindAsync(updateward.Ward1);
-            if (dbward is null)
-                return NotFound("Ward not found");
-            dbward.Name = updateward.Name;
-
-            await db.SaveChangesAsync();
-                
-            return Ok(await db.Wards.ToListAsync());
-        }
-
-         [HttpDelete]
-        public async Task<ActionResult<List<Ward>>> DeleteWard(int id)
-        {
-            var dbward = await db.Wards.FindAsync(id);
-            if (dbward is null)
-                return NotFound("Ward not found");
-            
-            db.Wards.Remove(dbward);
-            await db.SaveChangesAsync();
-                
-            return Ok(await db.Wards.ToListAsync());
+            DateOnly dateNow = DateOnly.FromDateTime(DateTime.Now);
+            var query = 
+            from a in db.Ovsts
+            join b in db.Patients on  a.Hn equals b.Hn
+            where a.Vstdate == dateNow && Convert.ToString( a.Oqueue ) == paraQN 
+            select new
+            {
+                a.Hn, 
+                b.Pname, 
+                b.Fname, 
+                b.Lname,
+                a.Vstdate
+            };
+            return Json(query.Take(50));
         }
     }

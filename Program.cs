@@ -27,4 +27,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.Urls.Add("http://*:80");
 app.Run();
