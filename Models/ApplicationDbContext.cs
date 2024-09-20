@@ -16,6 +16,8 @@ public partial class ApplicationDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Opduser> Opdusers { get; set; }
+
     public virtual DbSet<Ovst> Ovsts { get; set; }
 
     public virtual DbSet<Patient> Patients { get; set; }
@@ -23,13 +25,184 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Ward> Wards { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-      => optionsBuilder.UseMySql("server=172.16.5.39;port=3306;database=hos;userid=coachnrm;password=his_api_slave", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.1.37-mariadb"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySql("server=172.16.5.39;port=3306;database=hos;userid=coachnrm;password=his_api_slave", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.1.37-mariadb"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
             .UseCollation("tis620_thai_ci")
             .HasCharSet("tis620");
+
+        modelBuilder.Entity<Opduser>(entity =>
+        {
+            entity.HasKey(e => e.Loginname).HasName("PRIMARY");
+
+            entity.ToTable("opduser");
+
+            entity.HasIndex(e => e.Department, "department");
+
+            entity.HasIndex(e => e.Groupname, "groupname");
+
+            entity.HasIndex(e => e.Cid, "ix_cid");
+
+            entity.HasIndex(e => e.Doctorcode, "ix_doctorcode");
+
+            entity.HasIndex(e => e.HosGuid, "ix_hos_guid");
+
+            entity.HasIndex(e => e.HosGuidExt, "ix_hos_guid_ext");
+
+            entity.HasIndex(e => e.Name, "name");
+
+            entity.HasIndex(e => e.Password, "password");
+
+            entity.Property(e => e.Loginname)
+                .HasMaxLength(250)
+                .HasColumnName("loginname");
+            entity.Property(e => e.Accessright)
+                .HasColumnType("text")
+                .HasColumnName("accessright");
+            entity.Property(e => e.AccountDisable)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("account_disable");
+            entity.Property(e => e.AnnounceReadCount)
+                .HasColumnType("int(11)")
+                .HasColumnName("announce_read_count");
+            entity.Property(e => e.AutoLogoutMinute)
+                .HasColumnType("int(11)")
+                .HasColumnName("auto_logout_minute");
+            entity.Property(e => e.CheckLabPassword)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("check_lab_password");
+            entity.Property(e => e.Cid)
+                .HasMaxLength(13)
+                .HasColumnName("cid");
+            entity.Property(e => e.Department)
+                .HasMaxLength(250)
+                .HasColumnName("department");
+            entity.Property(e => e.Departmentposition)
+                .HasMaxLength(250)
+                .HasColumnName("departmentposition");
+            entity.Property(e => e.Doctorcode)
+                .HasMaxLength(7)
+                .HasColumnName("doctorcode");
+            entity.Property(e => e.DrugAccessLevel)
+                .HasColumnType("tinyint(4)")
+                .HasColumnName("drug_access_level");
+            entity.Property(e => e.Entryposition)
+                .HasMaxLength(250)
+                .HasColumnName("entryposition");
+            entity.Property(e => e.Groupname)
+                .HasMaxLength(250)
+                .HasColumnName("groupname");
+            entity.Property(e => e.HosGuid)
+                .HasMaxLength(38)
+                .HasColumnName("hos_guid");
+            entity.Property(e => e.HosGuidExt)
+                .HasMaxLength(64)
+                .HasColumnName("hos_guid_ext");
+            entity.Property(e => e.HospitalDepartmentId)
+                .HasColumnType("int(11)")
+                .HasColumnName("hospital_department_id");
+            entity.Property(e => e.IclaimJwt)
+                .HasColumnType("text")
+                .HasColumnName("iclaim_jwt");
+            entity.Property(e => e.LabCheckPassword)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("lab_check_password");
+            entity.Property(e => e.LabStaff)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("lab_staff");
+            entity.Property(e => e.MaxStation)
+                .HasColumnType("int(11)")
+                .HasColumnName("max_station");
+            entity.Property(e => e.MophAccPassword)
+                .HasMaxLength(250)
+                .HasColumnName("moph_acc_password");
+            entity.Property(e => e.MophAccUser)
+                .HasMaxLength(50)
+                .HasColumnName("moph_acc_user");
+            entity.Property(e => e.Name)
+                .HasMaxLength(250)
+                .HasColumnName("name");
+            entity.Property(e => e.NewPasswordDate).HasColumnName("new_password_date");
+            entity.Property(e => e.NhsoPassword)
+                .HasMaxLength(250)
+                .HasColumnName("nhso_password");
+            entity.Property(e => e.NhsoUser)
+                .HasMaxLength(250)
+                .HasColumnName("nhso_user");
+            entity.Property(e => e.NoAnnounceDisplay)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("no_announce_display");
+            entity.Property(e => e.NoDoctorConsultDisplay)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("no_doctor_consult_display");
+            entity.Property(e => e.NoLabResultDisplay)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("no_lab_result_display");
+            entity.Property(e => e.Passweb)
+                .HasMaxLength(250)
+                .HasColumnName("passweb");
+            entity.Property(e => e.Password)
+                .HasMaxLength(250)
+                .HasColumnName("password");
+            entity.Property(e => e.PasswordExpireDate).HasColumnName("password_expire_date");
+            entity.Property(e => e.PasswordRecheckDate)
+                .HasColumnType("int(11)")
+                .HasColumnName("password_recheck_date");
+            entity.Property(e => e.PcuUser)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("pcu_user");
+            entity.Property(e => e.Picture).HasColumnName("picture");
+            entity.Property(e => e.RealStaff)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("real_staff");
+            entity.Property(e => e.RestrictClinicAccess)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("restrict_clinic_access");
+            entity.Property(e => e.RestrictWardAccess)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("restrict_ward_access");
+            entity.Property(e => e.SendMophOtp)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("send_moph_otp");
+            entity.Property(e => e.ShowTip)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("show_tip");
+            entity.Property(e => e.Startfullscreen)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("startfullscreen");
+            entity.Property(e => e.Turbohosxp)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("turbohosxp");
+            entity.Property(e => e.Viewallmenu)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("viewallmenu");
+            entity.Property(e => e.VisibleMenu)
+                .HasColumnType("text")
+                .HasColumnName("visible_menu");
+            entity.Property(e => e.XrayStaff)
+                .HasMaxLength(1)
+                .IsFixedLength()
+                .HasColumnName("xray_staff");
+        });
 
         modelBuilder.Entity<Ovst>(entity =>
         {

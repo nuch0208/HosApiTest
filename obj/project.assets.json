@@ -2940,11 +2940,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\hosxpapi\\hosxpapi.csproj",
+      "projectUniqueName": "D:\\hosxpapi\\hosxpapi.csproj",
       "projectName": "hosxpapi",
-      "projectPath": "C:\\hosxpapi\\hosxpapi.csproj",
+      "projectPath": "D:\\hosxpapi\\hosxpapi.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\hosxpapi\\obj\\",
+      "outputPath": "D:\\hosxpapi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -3028,7 +3028,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.301/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

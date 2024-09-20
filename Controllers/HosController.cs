@@ -12,47 +12,61 @@ namespace HosApi.Controllers;
         {
             this.db = db;
         }
-
-         [HttpGet]
-        public IActionResult getHNdb (string paraHN)
+        
+        [HttpGet]
+        public IActionResult getHNdb (string para)
+        
         { 
-            //  var query = Ovst  Patient
-            // from a in db.Wards
-             var query =
-            from a in db.Patients
-            join b in db.Ovsts on a.Hn equals b.Hn  
-
-            where a.Hn == paraHN 
-            // group a by a.Hn  into newGroup
-            
-            select new
+            if(para.Length > 4)
             {
-                b.Hn,
-                a.Cid,
-                a.Pname,
-                a.Fname,
-                a.Lname
-                // c.Name,
-                // c.OldCode
-            };
-            return Json(query.Take(50));
-        }
-         [HttpGet]       
-        public IActionResult getQNdb(string paraQN)
-        {
+            return Json((from a in db.Patients
+                         join b in db.Ovsts on a.Hn equals b.Hn
+
+                         where a.Hn == para
+
+                         select new
+                         {
+                             b.Hn,
+                             a.Cid,
+                             a.Pname,
+                             a.Fname,
+                             a.Lname
+                             // c.Name,
+                             // c.OldCode
+                         }).Take(50));
+            }
+
             DateOnly dateNow = DateOnly.FromDateTime(DateTime.Now);
             var query = 
             from a in db.Ovsts
             join b in db.Patients on  a.Hn equals b.Hn
-            where a.Vstdate == dateNow && Convert.ToString( a.Oqueue ) == paraQN 
+            where a.Vstdate == dateNow && Convert.ToString( a.Oqueue ) == para
             select new
             {
+                a.Oqueue,
                 a.Hn, 
                 b.Pname, 
                 b.Fname, 
                 b.Lname,
                 a.Vstdate
             };
-            return Json(query.Take(50));
+            
+            return Json(query.First());
+        }
+
+        [HttpGet]
+        public IActionResult getUser (string para)
+        
+        { 
+        
+            return Json((from a in db.Opdusers
+                         where a.Loginname == para
+
+                         select new
+                         {
+                             a.Loginname,
+                             a.Passweb
+
+                         }).First());
         }
     }
