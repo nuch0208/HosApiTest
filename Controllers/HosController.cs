@@ -316,22 +316,30 @@ namespace HosApi.Controllers;
                 return Json(query.Take(1));
         }
 
-        [HttpPost]       
-        public async Task<ActionResult<List<Patient>>>GetIdAsync()
+        [HttpGet]       
+        public async Task<ActionResult<List<Patient>>>GetOneIdAsync()
 
             {
-                return await db.Patients.ToListAsync();
+                var query = 
+                from a in db.Patients
+                where a.Cid == "1749900017660"
+                select new
+                {
+                    a.Hn, a.Pname, a.Fname, a.Lname,a.Hometel, a.Hcode
+                };
+                return Json(query.Take(20));
+                // return await db.Patients.ToListAsync();
             }
 
         
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Patient>> GetIdAsync(string id)
+        [HttpGet]
+        public async Task<ActionResult<Patient>> GetIdAsync(string Cid)
         {
            
-            var x = id;
+            // var x = id;
             var query = 
                 from a in db.Patients
-                where a.Cid == x 
+                where a.Cid == Cid
                 select new
                 {
                     a.Hn, a.Pname, a.Fname, a.Lname,a.Hometel 
